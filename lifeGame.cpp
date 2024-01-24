@@ -50,12 +50,16 @@ public:
     }
 
     void SetLoadedFileName(const std::string& filename) {
-        loadedFilename_ = filename;
+        LoadedFilename_ = filename;
+    }
+
+    void SetStoredFileName(const std::string& filename) {
+        StoredFilename_ = filename;
     }
 
     // TODO:: verify it later
     void LoadFromFile() {
-        std::ifstream file(loadedFilename_, std::ios::binary);
+        std::ifstream file(LoadedFilename_, std::ios::binary);
         if (file.is_open()) {
             file.read(reinterpret_cast<char *>(grid_.data()), grid_.size());
             file.close();
@@ -238,7 +242,7 @@ private:
     const unsigned char dead = 0;
     std::uniform_int_distribution<> dist_;
     std::mt19937 mt;
-    std::string loadedFilename_;
+    std::string LoadedFilename_;
     std::string StoredFilename_;
 };
 
@@ -248,7 +252,7 @@ int main()
     CUniverse u(50, 20);
     // TODO:: find a valid gosper_glider_gun.bin
     u.SetLoadedFileName("gosper_glider_gun.bin");
-    u.SetLoadedFileName("gosper_glider_gun.bin");
+    u.SetStoredFileName("gosper_glider_gun.bin");
     // test okay for random init
     //u.Run(CUniverse::SEED::RANDOM, 100, 100ms);
     // test okay for TEN_CELL_ROW
