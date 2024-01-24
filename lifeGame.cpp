@@ -217,17 +217,24 @@ private:
     }
 
     int CountNeighbors(size_t const row, size_t const col) {
-        int count = 0;
-        for (int i = -1; i <= 1; ++i) {
-            for (int j = -1; j <= 1; ++j) {
-                if (i == 0 && j == 0) continue;
-                size_t neighborRow = (row + i + rows_) % rows_;
-                size_t neighborCol = (col + j + columns_) % columns_;
-                count += cell(neighborCol, neighborRow);
-            }
-        }
+      int count = 0;
+      // Check eight neighbors
+      count += CellState(col - 1, row - 1);
+      count += CellState(col, row - 1);
+      count += CellState(col + 1, row - 1);
+      count += CellState(col - 1, row);
+      count += CellState(col + 1, row);
+      count += CellState(col - 1, row + 1);
+      count += CellState(col, row + 1);
+      count += CellState(col + 1, row + 1);
+      return count;
+    }
 
-        return count;
+    unsigned char CellState(int const col, int const row) {
+      // Wrap around the grid (toroidal topology)
+      size_t neighborRow = (row + rows_) % rows_;
+      size_t neighborCol = (col + columns_) % columns_;
+      return cell(neighborCol, neighborRow);
     }
 
     unsigned char &cell(size_t const col, size_t const row) {
